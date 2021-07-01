@@ -2,6 +2,7 @@ import './App.css';
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {useState} from 'react';
+import ReactHtmlParser from 'react-html-parser';
 
 
 function App() {
@@ -26,10 +27,10 @@ function App() {
       <h1>영화 리뷰</h1>
       <div className='movie-container'>
         {viewContent.map(content=>(
-          <div key={content.title}>
+          <div style={{border:'1px solid black'}} key={content.title}>
             <h2>{content.title}</h2>
             <div>
-              {content.content}
+              {ReactHtmlParser(content.content)}
             </div>
           </div>
           )

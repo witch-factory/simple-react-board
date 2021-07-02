@@ -3,6 +3,7 @@ import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {useState} from 'react';
 import ReactHtmlParser from 'react-html-parser';
+import Axios from 'axios';
 
 
 function App() {
@@ -10,6 +11,17 @@ function App() {
     title:'',
     content:''
   })
+
+  const [viewContent, setViewContent]=useState([]);
+
+  const submitReview=()=>{
+    Axios.post('api/insert', {
+      title:movieContent.title,
+      content:movieContent.content
+    }).then(()=>{
+      alert('리뷰 등록 완료!');
+    })
+  };
 
   const getValue=(e)=>{
     const {name, value}=e.target;
@@ -20,7 +32,7 @@ function App() {
     console.log(movieContent);
   }
 
-  const [viewContent, setViewContent]=useState([]);
+
 
   return (
     <div className="App">
@@ -64,9 +76,7 @@ function App() {
       </div>
       <button
         className="submit-button"
-        onClick={()=>{
-        setViewContent(viewContent.concat({...movieContent}))}
-        }
+        onClick={submitReview}
       >입력</button>
     </div>
   );

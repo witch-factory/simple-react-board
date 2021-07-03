@@ -1,7 +1,7 @@
 import './App.css';
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import Axios from 'axios';
 
@@ -14,8 +14,14 @@ function App() {
 
   const [viewContent, setViewContent]=useState([]);
 
+  useEffect(()=>{
+    Axios.get('http://localhost:8000/api/get').then((response)=>{
+      setViewContent(response.data);
+    })
+  },[viewContent])
+
   const submitReview=()=>{
-    Axios.post('api/insert', {
+    Axios.post('http://localhost:8000/api/insert', {
       title:movieContent.title,
       content:movieContent.content
     }).then(()=>{
@@ -39,7 +45,7 @@ function App() {
       <h1>영화 리뷰</h1>
       <div className='movie-container'>
         {viewContent.map(content=>(
-          <div style={{border:'1px solid black'}} key={content.title}>
+          <div style={{border:'1px solid black'}} key={content.idx}>
             <h2>{content.title}</h2>
             <div>
               {ReactHtmlParser(content.content)}
